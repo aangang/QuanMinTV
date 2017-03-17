@@ -1,0 +1,225 @@
+<LinearLayout
+    xmlns:android="http://schemas.android.com/apk/res/android"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent"
+    android:orientation="vertical">
+
+    <!-- TODO: Update blank fragment layout -->
+    <RelativeLayout
+        android:id="@+id/layout_login"
+        android:layout_width="match_parent"
+        android:layout_height="200dp"
+        android:background="#FC4747">
+
+        <ImageView
+            android:id="@+id/mine_image_suggest"
+            android:layout_width="30dp"
+            android:layout_height="30dp"
+            android:layout_marginLeft="10dp"
+            android:layout_marginTop="15dp"
+            android:src="@mipmap/btn_nav_profile_suggest_logged_in"/>
+
+        <ImageView
+            android:id="@+id/mine_image_setting"
+            android:layout_width="30dp"
+            android:layout_height="30dp"
+            android:layout_alignParentRight="true"
+            android:layout_alignParentTop="true"
+            android:layout_marginRight="10dp"
+            android:layout_marginTop="15dp"
+            android:src="@mipmap/btn_nav_profile_settings"/>
+
+        <ImageView
+            android:id="@+id/mine_image_icon"
+            android:layout_width="80dp"
+            android:layout_height="80dp"
+            android:layout_centerHorizontal="true"
+            android:layout_centerVertical="true"
+            android:clickable="true"
+            android:src="@mipmap/img_profile_touxiang_default_unknow"/>
+
+        <TextView
+            android:id="@+id/mine_tv_login"
+            android:layout_width="80dp"
+            android:layout_height="20dp"
+            android:layout_alignLeft="@+id/mine_image_icon"
+            android:layout_alignStart="@+id/mine_image_icon"
+            android:layout_below="@+id/mine_image_icon"
+            android:layout_marginTop="10dp"
+            android:gravity="center"
+            android:text="点击登录"/>
+    </RelativeLayout>
+
+    <RelativeLayout
+        android:id="@+id/mine_layout_pay"
+        style="@style/MineItemRelativeLayout"
+        android:layout_margin="10dp"
+        android:background="@drawable/mine_pay_bg"
+        android:visibility="gone">
+
+        <ImageView
+            android:id="@+id/mine_image_seed"
+            style="@style/MineItemIcon"
+            android:padding="2dp"
+            android:src="@mipmap/new_seed"/>
+
+        <TextView
+            android:id="@+id/mine_tv_seed"
+            style="@style/MineItemName"
+            android:layout_toRightOf="@+id/mine_image_seed"
+            android:text="0"/>
+
+        <ImageView
+            android:id="@+id/mine_image_coin"
+            android:layout_width="20dp"
+            android:layout_height="20dp"
+            android:layout_centerVertical="true"
+            android:layout_marginLeft="10dp"
+            android:layout_toRightOf="@id/mine_tv_seed"
+            android:padding="2dp"
+            android:src="@mipmap/new_coin"/>
+
+        <TextView
+            android:id="@+id/mine_tv_coin"
+            style="@style/MineItemName"
+            android:layout_toRightOf="@+id/mine_image_coin"
+            android:text="0"/>
+
+        <TextView
+            android:id="@+id/mine_tv_pay"
+            android:layout_width="60dp"
+            android:layout_height="30dp"
+            android:layout_alignParentRight="true"
+            android:layout_centerVertical="true"
+            android:layout_marginRight="10dp"
+            android:background="@drawable/mine_pay_tv_bg"
+            android:clickable="true"
+            android:gravity="center"
+            android:text="充值"
+            android:textColor="#ffffff"/>
+    </RelativeLayout>
+
+    <RelativeLayout
+        android:id="@+id/mine_layout_room"
+        style="@style/MineItemRelativeLayout">
+
+        <ImageView
+            android:id="@+id/mine_image_room"
+            style="@style/MineItemIcon"
+            android:src="@mipmap/ic_profile_host_room"/>
+
+        <TextView
+            style="@style/MineItemName"
+            android:layout_toRightOf="@+id/mine_image_room"
+            android:text="房间管理"/>
+
+        <ImageView
+            style="@style/MineItemRightPic"/>
+    </RelativeLayout>
+
+    <View
+        style="@style/MineItemDevide"/>
+
+    <RelativeLayout
+        android:id="@+id/mine_layout_concern"
+        style="@style/MineItemRelativeLayout">
+
+        <ImageView
+            android:id="@+id/mine_image_concern"
+            style="@style/MineItemIcon"
+            android:src="@mipmap/ic_profile_concern"/>
+
+        <TextView
+            style="@style/MineItemName"
+            android:layout_toRightOf="@+id/mine_image_concern"
+            android:text="我的关注"/>
+
+        <ImageView
+            style="@style/MineItemRightPic"/>
+    </RelativeLayout>
+
+    <View
+        style="@style/MineItemDevide"/>
+
+    <RelativeLayout
+        android:id="@+id/mine_layout_history"
+        style="@style/MineItemRelativeLayout">
+
+        <ImageView
+            android:id="@+id/mine_image_history"
+            style="@style/MineItemIcon"
+            android:src="@mipmap/ic_profile_histoy"/>
+
+        <TextView
+            style="@style/MineItemName"
+            android:layout_toRightOf="@+id/mine_image_history"
+            android:text="观看历史"/>
+
+        <ImageView
+            style="@style/MineItemRightPic"/>
+    </RelativeLayout>
+
+    <View
+        style="@style/MineItemDevide"/>
+
+    <RelativeLayout
+        android:id="@+id/mine_layout_remind"
+        style="@style/MineItemRelativeLayout">
+
+        <ImageView
+            android:id="@+id/mine_image_remind"
+            style="@style/MineItemIcon"
+            android:src="@mipmap/icon_profile_remind"/>
+
+        <TextView
+            style="@style/MineItemName"
+            android:layout_toRightOf="@+id/mine_image_remind"
+            android:text="开播提醒"/>
+
+        <ImageView
+            style="@style/MineItemRightPic"/>
+    </RelativeLayout>
+
+    <View
+        style="@style/MineItemDevide"/>
+
+    <RelativeLayout
+        android:id="@+id/mine_layout_task"
+        style="@style/MineItemRelativeLayout">
+
+        <ImageView
+            android:id="@+id/mine_image_task"
+            style="@style/MineItemIcon"
+            android:src="@mipmap/ic_profile_task"/>
+
+        <TextView
+            style="@style/MineItemName"
+            android:layout_toRightOf="@+id/mine_image_task"
+            android:text="种子任务"/>
+
+        <ImageView
+            style="@style/MineItemRightPic"/>
+    </RelativeLayout>
+
+    <View
+        style="@style/MineItemDevide"/>
+
+    <RelativeLayout
+        android:id="@+id/mine_layout_game"
+        style="@style/MineItemRelativeLayout">
+
+        <ImageView
+            android:id="@+id/mine_image_game"
+            style="@style/MineItemIcon"
+            android:src="@mipmap/ic_profile_game"/>
+
+        <TextView
+            style="@style/MineItemName"
+            android:layout_toRightOf="@+id/mine_image_game"
+            android:text="游戏中心"/>
+
+        <ImageView
+            style="@style/MineItemRightPic"/>
+    </RelativeLayout>
+
+</LinearLayout>

@@ -1,0 +1,40 @@
+<?xml version="1.0" encoding="utf-8"?>
+<RelativeLayout xmlns:android="http://schemas.android.com/apk/res/android"
+                android:layout_width="match_parent"
+                android:layout_height="48dp"
+                android:background="#f2f0f0"
+                android:gravity="center_vertical">
+
+    <ImageView
+        android:layout_width="70dp"
+        android:layout_height="30dp"
+        android:layout_marginLeft="10dp"
+        android:background="@mipmap/company_logo"/>
+
+    <ImageView
+        android:id="@+id/controller_recommend_search"
+        android:layout_width="30dp"
+        android:layout_height="30dp"
+        android:layout_alignParentRight="true"
+        android:layout_marginRight="10dp"
+        android:background="@drawable/home_search_bg"
+        android:clickable="true"/>
+
+    <ImageView
+        android:id="@+id/controller_recommend_like"
+        android:layout_width="30dp"
+        android:layout_height="30dp"
+        android:layout_marginRight="10dp"
+        android:layout_toLeftOf="@id/controller_recommend_search"
+        android:background="@drawable/home_like_bg"
+        android:clickable="true"/>
+
+    <ImageView
+        android:id="@+id/controller_recommend_gift"
+        android:layout_width="30dp"
+        android:layout_height="30dp"
+        android:layout_marginRight="10dp"
+        android:layout_toLeftOf="@id/controller_recommend_like"/>
+
+
+</RelativeLayout>
