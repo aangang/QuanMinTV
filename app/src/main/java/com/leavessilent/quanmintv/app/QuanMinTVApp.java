@@ -10,5 +10,8 @@ import cn.sharesdk.onekeyshare.OnekeyShare;
  */
 
 public class QuanMinTVApp extends Application {
-
+    @Override
+    public void onCreate() {
+        super.onCreate();
+    }
 }
