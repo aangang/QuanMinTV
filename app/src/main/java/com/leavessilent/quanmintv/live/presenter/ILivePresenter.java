@@ -6,4 +6,6 @@ package com.leavessilent.quanmintv.live.presenter;
 
 public interface ILivePresenter {
     void getAllLive();
+
+    String getVideoUid(int position);
 }

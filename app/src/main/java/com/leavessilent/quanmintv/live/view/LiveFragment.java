@@ -1,6 +1,7 @@
 package com.leavessilent.quanmintv.live.view;
 
 
+import android.content.Intent;
 import android.graphics.drawable.AnimationDrawable;
 import android.os.Bundle;
 import android.support.v4.app.Fragment;
@@ -11,10 +12,13 @@ import android.widget.ImageView;
 import android.widget.Toast;
 
 import com.leavessilent.quanmintv.R;
+import com.leavessilent.quanmintv.adapter.CommonAdapter;
 import com.leavessilent.quanmintv.adapter.LiveAdapter;
 import com.leavessilent.quanmintv.common.base.BaseFragment;
+import com.leavessilent.quanmintv.common.base.Constant;
 import com.leavessilent.quanmintv.home.model.LinkObject;
 import com.leavessilent.quanmintv.live.presenter.LivePresenter;
+import com.leavessilent.quanmintv.play.view.PlayActivity;
 
 import java.util.List;
 
@@ -23,7 +27,7 @@ import butterknife.BindView;
 /**
  * A simple {@link Fragment} subclass.
  */
-public class LiveFragment extends BaseFragment<ILiveView, LivePresenter> implements ILiveView {
+public class LiveFragment extends BaseFragment<ILiveView, LivePresenter> implements ILiveView, CommonAdapter.OnItemClickListener {
 
     @BindView(R.id.rv_live)
     RecyclerView mLiveRv;
@@ -42,6 +46,7 @@ public class LiveFragment extends BaseFragment<ILiveView, LivePresenter> impleme
         mAnimationDrawable = ((AnimationDrawable) mLoadingImage.getDrawable());
 
         mAdapter = new LiveAdapter(getContext(), null);
+        mAdapter.setListener(this);
         GridLayoutManager layoutManager = new GridLayoutManager(getContext(), 2);
         mLiveRv.setLayoutManager(layoutManager);
         mLiveRv.setAdapter(mAdapter);
@@ -78,5 +83,13 @@ public class LiveFragment extends BaseFragment<ILiveView, LivePresenter> impleme
     @Override
     public void showError(Throwable e) {
         Toast.makeText(getContext(), e.getMessage(), Toast.LENGTH_SHORT).show();
+    }
+
+    @Override
+    public void onItemClick(View view, int position) {
+        String uid = mPresenter.getVideoUid(position);
+        Intent intent = new Intent(getContext(), PlayActivity.class);
+        intent.putExtra(Constant.UID, uid);
+        startActivity(intent);
     }
 }

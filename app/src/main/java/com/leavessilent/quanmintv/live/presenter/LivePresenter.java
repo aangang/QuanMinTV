@@ -11,6 +11,7 @@ import com.leavessilent.quanmintv.live.view.ILiveView;
  */
 
 public class LivePresenter extends BasePresenter<ILiveView> implements ILivePresenter {
+    private AllLiveModel mData;
     private AllLiveModelImpl mModel;
 
     public LivePresenter() {
@@ -21,6 +22,7 @@ public class LivePresenter extends BasePresenter<ILiveView> implements ILivePres
     public void getAllLive() {
         mView.showLoading();
         mModel.getAllLiveModel(new OnLoadingDataListener<AllLiveModel>() {
+
             @Override
             public void onComplete() {
                 mView.hideLoading();
@@ -33,8 +35,14 @@ public class LivePresenter extends BasePresenter<ILiveView> implements ILivePres
 
             @Override
             public void onCallback(AllLiveModel data) {
+                mData = data;
                 mView.updateData(data.getData());
             }
         });
+    }
+
+    @Override
+    public String getVideoUid(int position) {
+        return mData.getData().get(position).getUid();
     }
 }
