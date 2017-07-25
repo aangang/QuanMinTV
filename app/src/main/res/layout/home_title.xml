@@ -9,7 +9,7 @@
         android:layout_width="70dp"
         android:layout_height="30dp"
         android:layout_marginLeft="10dp"
-        android:background="@mipmap/company_logo"/>
+        android:src="@mipmap/company_logo"/>
 
     <ImageView
         android:id="@+id/controller_recommend_search"

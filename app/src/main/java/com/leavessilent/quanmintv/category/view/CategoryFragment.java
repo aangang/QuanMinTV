@@ -1,5 +1,6 @@
 package com.leavessilent.quanmintv.category.view;
 
+import android.content.Intent;
 import android.graphics.drawable.AnimationDrawable;
 import android.os.Bundle;
 import android.support.annotation.Nullable;
@@ -14,9 +15,12 @@ import android.widget.Toast;
 
 import com.leavessilent.quanmintv.R;
 import com.leavessilent.quanmintv.adapter.CategoryAdapter;
+import com.leavessilent.quanmintv.adapter.CommonAdapter;
 import com.leavessilent.quanmintv.category.model.CategoryModel;
 import com.leavessilent.quanmintv.category.presenter.CategoryPresenter;
 import com.leavessilent.quanmintv.common.base.BaseFragment;
+import com.leavessilent.quanmintv.common.base.Constant;
+import com.leavessilent.quanmintv.live.view.AllLiveActivity;
 
 import java.util.List;
 
@@ -26,7 +30,7 @@ import butterknife.BindView;
  * Created by Administrator on 2017/2/14.
  */
 
-public class CategoryFragment extends BaseFragment<ICategoryView, CategoryPresenter> implements ICategoryView {
+public class CategoryFragment extends BaseFragment<ICategoryView, CategoryPresenter> implements ICategoryView, CommonAdapter.OnItemClickListener {
     public static final String TAG = CategoryFragment.class.getSimpleName();
 
     @BindView(R.id.layout_loading)
@@ -44,6 +48,7 @@ public class CategoryFragment extends BaseFragment<ICategoryView, CategoryPresen
         GridLayoutManager layoutManager = new GridLayoutManager(getContext(), 3);
         mCategoryRv.setLayoutManager(layoutManager);
         mAdapter = new CategoryAdapter(getContext(), null);
+        mAdapter.setListener(this);
         mCategoryRv.setAdapter(mAdapter);
         mPresenter.getCategories();
     }
@@ -78,5 +83,12 @@ public class CategoryFragment extends BaseFragment<ICategoryView, CategoryPresen
     @Override
     public void showError(Throwable e) {
         Toast.makeText(getContext(), e.getMessage(), Toast.LENGTH_SHORT).show();
+    }
+
+    @Override
+    public void onItemClick(View view, int position) {
+        Intent intent = new Intent(getContext(), AllLiveActivity.class);
+        intent.putExtra(Constant.CLASSIFY, mAdapter.get(position).getSlug());
+        getContext().startActivity(intent);
     }
 }

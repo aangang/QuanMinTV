@@ -7,12 +7,10 @@ import android.widget.TextView;
 import com.bumptech.glide.Glide;
 import com.leavessilent.quanmintv.R;
 import com.leavessilent.quanmintv.home.model.HomeModel;
-import com.leavessilent.quanmintv.utils.ScreenHelper;
 
 import java.util.List;
 
 import jp.wasabeef.glide.transformations.CropCircleTransformation;
-import jp.wasabeef.glide.transformations.RoundedCornersTransformation;
 
 /**
  * Created by Administrator on 2017/2/16.

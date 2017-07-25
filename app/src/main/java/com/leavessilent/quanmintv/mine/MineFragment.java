@@ -167,10 +167,6 @@ public class MineFragment extends Fragment implements PlatformActionListener, Ha
             case SDK_PAY_FLAG: {
                 @SuppressWarnings("unchecked")
                 PayResult payResult = new PayResult((Map<String, String>) msg.obj);
-                /**
-                 对于支付结果，请商户依赖服务端的异步通知结果。同步通知结果，仅作为支付结束的通知。
-                 */
-
                 String resultInfo = payResult.getResult();// 同步返回需要验证的信息
                 LogUtil.d(resultInfo);
                 String resultStatus = payResult.getResultStatus();

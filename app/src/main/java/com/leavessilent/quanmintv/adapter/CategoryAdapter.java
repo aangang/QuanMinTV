@@ -7,7 +7,7 @@ import android.widget.TextView;
 import com.bumptech.glide.Glide;
 import com.leavessilent.quanmintv.R;
 import com.leavessilent.quanmintv.category.model.CategoryModel;
-import com.leavessilent.quanmintv.utils.ScreenHelper;
+import com.leavessilent.quanmintv.utils.ScreenUtil;
 
 import java.util.List;
 
@@ -37,7 +37,7 @@ public class CategoryAdapter extends CommonAdapter<CategoryModel> {
         TextView name = (TextView) holder.getView(R.id.item_category_name);
         Glide.with(mContext)
                 .load(categoryModel.getThumb())
-                .bitmapTransform(new RoundedCornersTransformation(mContext, ScreenHelper.dp2px(mContext, 4), 0))
+                .bitmapTransform(new RoundedCornersTransformation(mContext, ScreenUtil.dp2px(mContext, 4), 0))
                 .into(image);
         name.setText(categoryModel.getName());
     }

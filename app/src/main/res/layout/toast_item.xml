@@ -1,0 +1,20 @@
+<?xml version="1.0" encoding="utf-8"?>
+<LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    android:orientation="horizontal" android:layout_width="match_parent"
+    android:layout_height="match_parent">
+
+    <ImageView
+        android:id="@+id/play_image_volum_light"
+        android:layout_width="60dp"
+        android:layout_height="60dp"
+        android:src="@mipmap/sound"/>
+    <TextView
+        android:id="@+id/play_text_volum_light"
+        android:layout_width="60dp"
+        android:layout_height="60dp"
+        android:gravity="center"
+        android:text="100%"
+        android:textColor="#ffffff"
+        android:textSize="18sp"/>
+
+</LinearLayout>

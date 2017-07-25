@@ -1,6 +1,7 @@
 package com.leavessilent.quanmintv.adapter;
 
 import android.content.Context;
+import android.content.Intent;
 import android.support.v4.view.ViewPager;
 import android.support.v7.widget.GridLayoutManager;
 import android.support.v7.widget.LinearLayoutManager;
@@ -10,14 +11,19 @@ import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
 import android.widget.ImageView;
+import android.widget.LinearLayout;
 import android.widget.TextView;
 
 import com.leavessilent.quanmintv.R;
+import com.leavessilent.quanmintv.common.base.Constant;
 import com.leavessilent.quanmintv.home.model.HomeModel;
 import com.leavessilent.quanmintv.home.model.LinkObject;
+import com.leavessilent.quanmintv.live.view.AllLiveActivity;
 import com.leavessilent.quanmintv.loader.GlideImageLoader;
+import com.leavessilent.quanmintv.play.view.PlayActivity;
 import com.youth.banner.Banner;
 import com.youth.banner.BannerConfig;
+import com.youth.banner.listener.OnBannerClickListener;
 
 import java.util.ArrayList;
 import java.util.List;
@@ -28,22 +34,37 @@ import java.util.List;
  * Created by Administrator on 2017/2/16.
  */
 
-public class HomeAdapter extends RecyclerView.Adapter<RecyclerView.ViewHolder> {
+public class HomeAdapter extends RecyclerView.Adapter<RecyclerView.ViewHolder> implements View.OnClickListener {
     private static final int TYPE_AD = 0;
     private static final int TYPE_CLASSIFY = 1;
     private static final int TYPE_LIVE = 2;
     private static final int TYPE_RECOMMEND = 3;
+
+    private OnItemClickListener mListener;
 
     public static final String TAG = HomeAdapter.class.getSimpleName();
     private final Context mContext;
 
     private HomeModel mHomeModel;
     private LayoutInflater mInflater;
+    private RecyclerView mRecyclerView;
+    private HomeRecommendAdapter mHomeRecommendAdapter;
+
+    public void setListener(OnItemClickListener listener) {
+        mListener = listener;
+    }
 
     public HomeAdapter(Context context, HomeModel homeModel) {
         mContext = context;
         mHomeModel = homeModel;
+
         mInflater = LayoutInflater.from(context);
+    }
+
+    public void switchRecommendData() {
+        if (mHomeRecommendAdapter != null) {
+            mHomeRecommendAdapter.switchData();
+        }
     }
 
     public void update(HomeModel homeModel) {
@@ -52,6 +73,7 @@ public class HomeAdapter extends RecyclerView.Adapter<RecyclerView.ViewHolder> {
             this.notifyDataSetChanged();
         }
     }
+
 
     @Override
     public int getItemViewType(int position) {
@@ -72,7 +94,7 @@ public class HomeAdapter extends RecyclerView.Adapter<RecyclerView.ViewHolder> {
 
     @Override
     public RecyclerView.ViewHolder onCreateViewHolder(ViewGroup parent, int viewType) {
-        View itemView;
+        View itemView = null;
         RecyclerView.ViewHolder viewHolder = null;
         switch (viewType) {
             case TYPE_AD:
@@ -123,11 +145,28 @@ public class HomeAdapter extends RecyclerView.Adapter<RecyclerView.ViewHolder> {
         if (holder instanceof RecommendViewHolder) {
             RecommendViewHolder recommendViewHolder = (RecommendViewHolder) holder;
             recommendViewHolder.mTitleTv.setText("  " + mHomeModel.getList().get(position).getName());
+
+            recommendViewHolder.mMoreTv.setOnClickListener(this);
+
             LinearLayoutManager layoutManager = new GridLayoutManager(mContext, 2);
             recommendViewHolder.mRecyclerView.setLayoutManager(layoutManager);
-            HomeRecommendAdapter adapter = new HomeRecommendAdapter(mContext, mHomeModel.getApprecommendation());
-            recommendViewHolder.mRecyclerView.setAdapter(adapter);
+            mHomeRecommendAdapter = new HomeRecommendAdapter(mContext, mHomeModel.getApprecommendation());
+            recommendViewHolder.mRecyclerView.setAdapter(mHomeRecommendAdapter);
+            mHomeRecommendAdapter.setData(mHomeModel.getApprecommendation());
+            mHomeRecommendAdapter.setListener(new CommonAdapter.OnItemClickListener() {
+                @Override
+                public void onItemClick(View view, int position) {
+                    String uid = mHomeRecommendAdapter.get(position).getLink_object().getUid();
+                    Intent intent = new Intent(mContext, PlayActivity.class);
+                    intent.putExtra(Constant.UID, uid);
+                    mContext.startActivity(intent);
+                }
+            });
         }
+    }
+
+    public String getSlug(int position) {
+        return mHomeModel.getList().get(position).getCategory_slug();
     }
 
     /**
@@ -136,7 +175,7 @@ public class HomeAdapter extends RecyclerView.Adapter<RecyclerView.ViewHolder> {
      * @param holder
      * @param position
      */
-    private void liveBindViewHolder(RecyclerView.ViewHolder holder, int position) {
+    private void liveBindViewHolder(RecyclerView.ViewHolder holder, final int position) {
         if (holder instanceof LiveViewHolder) {
             LiveViewHolder liveViewHolder = (LiveViewHolder) holder;
             List<HomeModel.ListBean> list = mHomeModel.getList();
@@ -146,69 +185,79 @@ public class HomeAdapter extends RecyclerView.Adapter<RecyclerView.ViewHolder> {
 
             LiveAdapter adapter = new LiveAdapter(mContext, null);
             liveViewHolder.mRecyclerView.setAdapter(adapter);
-            List<LinkObject> data;
+            final List<LinkObject> data;
             data = new ArrayList<>();
 
-            String slug = list.get(position).getSlug();
+            String slug = list.get(position).getCategory_slug();
             liveViewHolder.mMoreTv.setText("瞅一瞅");
-            if ("app-lol".equals(slug)) {
+            liveViewHolder.mMoreTv.setOnClickListener(this);
+            if ("lol".equals(slug)) {
                 for (HomeModel.ApplolBean value : mHomeModel.getApplol()) {
                     data.add(value.getLink_object());
                 }
-            } else if ("app-beauty".equals(slug)) {
-                for (HomeModel.ApplolBean value : mHomeModel.getApplol()) {
+            } else if ("beauty".equals(slug)) {
+                for (HomeModel.AppbeautyBean value : mHomeModel.getAppbeauty()) {
                     data.add(value.getLink_object());
                 }
-            } else if ("app-heartstone".equals(slug)) {
+            } else if ("heartstone".equals(slug)) {
                 for (HomeModel.AppheartstoneBean value : mHomeModel.getAppheartstone()) {
                     data.add(value.getLink_object());
                 }
-            } else if ("app-huwai".equals(slug)) {
+            } else if ("huwai".equals(slug)) {
                 for (HomeModel.ApphuwaiBean value : mHomeModel.getApphuwai()) {
                     data.add(value.getLink_object());
                 }
-            } else if ("app-overwatch".equals(slug)) {
+            } else if ("overwatch".equals(slug)) {
                 for (HomeModel.AppoverwatchBean value : mHomeModel.getAppoverwatch()) {
                     data.add(value.getLink_object());
                 }
-            } else if ("app-blizzard".equals(slug)) {
+            } else if ("blizzard".equals(slug)) {
                 for (HomeModel.AppblizzardBean value : mHomeModel.getAppblizzard()) {
                     data.add(value.getLink_object());
                 }
-            } else if ("app-qqfeiche".equals(slug)) {
+            } else if ("qqfeiche".equals(slug)) {
                 for (HomeModel.AppqqfeicheBean value : mHomeModel.getAppqqfeiche()) {
                     data.add(value.getLink_object());
                 }
-            } else if ("app-mobilegame".equals(slug)) {
+            } else if ("mobilegame".equals(slug)) {
                 for (HomeModel.AppmobilegameBean value : mHomeModel.getAppmobilegame()) {
                     data.add(value.getLink_object());
                 }
-            } else if ("app-wangzhe".equals(slug)) {
+            } else if ("wangzhe".equals(slug)) {
                 for (HomeModel.AppwangzheBean value : mHomeModel.getAppwangzhe()) {
                     data.add(value.getLink_object());
                 }
-            } else if ("app-dota2".equals(slug)) {
+            } else if ("dota2".equals(slug)) {
                 for (HomeModel.Appdota2Bean value : mHomeModel.getAppdota2()) {
                     data.add(value.getLink_object());
                 }
-            } else if ("app-tvgame".equals(slug)) {
+            } else if ("tvgame".equals(slug)) {
                 for (HomeModel.ApptvgameBean value : mHomeModel.getApptvgame()) {
                     data.add(value.getLink_object());
                 }
-            } else if ("app-webgame".equals(slug)) {
+            } else if ("webgame".equals(slug)) {
                 for (HomeModel.AppwebgameBean value : mHomeModel.getAppwebgame()) {
                     data.add(value.getLink_object());
                 }
-            } else if ("app-dnf".equals(slug)) {
+            } else if ("dnf".equals(slug)) {
                 for (HomeModel.AppdnfBean value : mHomeModel.getAppdnf()) {
                     data.add(value.getLink_object());
                 }
-            } else if ("app-minecraft".equals(slug)) {
+            } else if ("minecraft".equals(slug)) {
                 for (HomeModel.AppminecraftBean value : mHomeModel.getAppminecraft()) {
                     data.add(value.getLink_object());
                 }
             }
 
+            adapter.setListener(new CommonAdapter.OnItemClickListener() {
+                @Override
+                public void onItemClick(View view, int position) {
+                    String uid = data.get(position).getUid();
+                    Intent intent = new Intent(mContext, PlayActivity.class);
+                    intent.putExtra(Constant.UID, uid);
+                    mContext.startActivity(intent);
+                }
+            });
             adapter.update(data);
 
 
@@ -223,10 +272,21 @@ public class HomeAdapter extends RecyclerView.Adapter<RecyclerView.ViewHolder> {
      */
     private void classyBindViewHolder(RecyclerView.ViewHolder holder, int position) {
         if (holder instanceof ClassifyViewHolder) {
-            ClassifyViewHolder classifyViewHolder = (ClassifyViewHolder) holder;
+            final ClassifyViewHolder classifyViewHolder = (ClassifyViewHolder) holder;
             LinearLayoutManager layoutManager = new LinearLayoutManager(mContext, LinearLayoutManager.HORIZONTAL, false);
             classifyViewHolder.mRecyclerView.setLayoutManager(layoutManager);
-            classifyViewHolder.mRecyclerView.setAdapter(new HomeClassifyAdapter(mContext, mHomeModel.getAppclassification()));
+            final List<HomeModel.AppclassificationBean> appclassification = mHomeModel.getAppclassification();
+            HomeClassifyAdapter adapter = new HomeClassifyAdapter(mContext, appclassification);
+            classifyViewHolder.mRecyclerView.setAdapter(adapter);
+            adapter.setListener(new CommonAdapter.OnItemClickListener() {
+                @Override
+                public void onItemClick(View view, int position) {
+                    String classification = appclassification.get(position).getExt().getClassification();
+                    Intent intent = new Intent(mContext, AllLiveActivity.class);
+                    intent.putExtra(Constant.CLASSIFY, classification);
+                    mContext.startActivity(intent);
+                }
+            });
         }
     }
 
@@ -239,7 +299,7 @@ public class HomeAdapter extends RecyclerView.Adapter<RecyclerView.ViewHolder> {
     private void adBindViewHolder(RecyclerView.ViewHolder holder, int position) {
         if (holder instanceof AdViewHolder) {
             AdViewHolder adViewHolder = (AdViewHolder) holder;
-            List<HomeModel.AppindexBean> appindex = mHomeModel.getAppindex();
+            final List<HomeModel.AppindexBean> appindex = mHomeModel.getAppindex();
             List<String> imageUrls = new ArrayList<>();
             List<String> titles = new ArrayList<>();
             for (int i = 0, size = appindex.size(); i < size; i++) {
@@ -248,6 +308,17 @@ public class HomeAdapter extends RecyclerView.Adapter<RecyclerView.ViewHolder> {
                 imageUrls.add(object.getRecommend_image());
                 titles.add(object.getTitle());
             }
+
+            adViewHolder.mBanner.setOnBannerClickListener(new OnBannerClickListener() {
+                @Override
+                public void OnBannerClick(int position) {
+                    String uid = appindex.get(position - 1).getLink_object().getUid();
+                    Intent intent = new Intent(mContext, PlayActivity.class);
+                    intent.putExtra(Constant.UID, uid);
+                    mContext.startActivity(intent);
+                }
+            });
+
             adViewHolder.mBanner
                     .setBannerStyle(BannerConfig.CIRCLE_INDICATOR_TITLE_INSIDE)
                     .setIndicatorGravity(BannerConfig.RIGHT)
@@ -263,6 +334,24 @@ public class HomeAdapter extends RecyclerView.Adapter<RecyclerView.ViewHolder> {
     public int getItemCount() {
         return mHomeModel == null ? 0 : mHomeModel.getList().size();
     }
+
+
+    @Override
+    public void onAttachedToRecyclerView(RecyclerView recyclerView) {
+        super.onAttachedToRecyclerView(recyclerView);
+        mRecyclerView = recyclerView;
+    }
+
+    @Override
+    public void onClick(View v) {
+        int position = mRecyclerView.getChildAdapterPosition(((View) v.getParent().getParent()));
+        if (position >= 0 && position < this.getItemCount()) {
+            if (mListener != null) {
+                mListener.onItemClick(v, position);
+            }
+        }
+    }
+
 
     public static class LiveViewHolder extends RecyclerView.ViewHolder {
         private TextView mTitleTv;
@@ -308,6 +397,10 @@ public class HomeAdapter extends RecyclerView.Adapter<RecyclerView.ViewHolder> {
             super(itemView);
             mRecyclerView = (RecyclerView) itemView.findViewById(R.id.item_classify_rv);
         }
+    }
+
+    public static interface OnItemClickListener {
+        void onItemClick(View view, int position);
     }
 
 }

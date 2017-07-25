@@ -8,7 +8,7 @@ import com.bumptech.glide.Glide;
 import com.leavessilent.quanmintv.R;
 import com.leavessilent.quanmintv.home.model.HomeModel;
 import com.leavessilent.quanmintv.home.model.LinkObject;
-import com.leavessilent.quanmintv.utils.ScreenHelper;
+import com.leavessilent.quanmintv.utils.ScreenUtil;
 
 import java.text.DecimalFormat;
 import java.util.List;
@@ -23,6 +23,8 @@ import jp.wasabeef.glide.transformations.RoundedCornersTransformation;
 public class HomeRecommendAdapter extends CommonAdapter<HomeModel.ApprecommendationBean> {
 
     private final Context mContext;
+    private int mIndex = 0;
+    private List<HomeModel.ApprecommendationBean> mAllData;
 
     public HomeRecommendAdapter(Context context, List<HomeModel.ApprecommendationBean> data) {
         super(context, data);
@@ -35,7 +37,26 @@ public class HomeRecommendAdapter extends CommonAdapter<HomeModel.Apprecommendat
     }
 
     public void switchData() {
+        /**
+         * 如果是单数，则移除最后一个
+         */
+        int size = mAllData.size();
+        if (size % 2 != 0) {
+            mAllData.remove(size - 2);
+        }
+        mIndex++;
+        if (mIndex * 2 == size) {
+            mIndex = 0;
+        }
 
+        List<HomeModel.ApprecommendationBean> list = mAllData.subList(mIndex * 2, mIndex * 2 + 2);
+        update(list);
+        notifyDataSetChanged();
+    }
+
+
+    public void setData(List<HomeModel.ApprecommendationBean> data) {
+        mAllData = data;
     }
 
     @Override
@@ -56,7 +77,7 @@ public class HomeRecommendAdapter extends CommonAdapter<HomeModel.Apprecommendat
         Glide.with(mContext)
                 .load(link_object.getThumb())
                 .placeholder(R.mipmap.live_default)
-                .bitmapTransform(new RoundedCornersTransformation(mContext, ScreenHelper.dp2px(mContext, 5), 0))
+                .bitmapTransform(new RoundedCornersTransformation(mContext, ScreenUtil.dp2px(mContext, 5), 0))
                 .into(image);
 
         int view = link_object.getView();
@@ -79,4 +100,5 @@ public class HomeRecommendAdapter extends CommonAdapter<HomeModel.Apprecommendat
         title.setText(bean.getTitle());
 
     }
+
 }

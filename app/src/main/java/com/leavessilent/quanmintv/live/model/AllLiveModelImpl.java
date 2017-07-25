@@ -40,4 +40,32 @@ public class AllLiveModelImpl implements IAllLiveModel {
                     }
                 });
     }
+
+    @Override
+    public void getAllLiveModelByClassify(String classify, final OnLoadingDataListener<AllLiveModel> listener) {
+        HttpUtils.getService().getAllClassifyLive(classify)
+                .subscribeOn(Schedulers.io())
+                .observeOn(AndroidSchedulers.mainThread())
+                .subscribe(new Observer<AllLiveModel>() {
+                    @Override
+                    public void onSubscribe(Disposable d) {
+
+                    }
+
+                    @Override
+                    public void onNext(AllLiveModel value) {
+                        listener.onCallback(value);
+                    }
+
+                    @Override
+                    public void onError(Throwable e) {
+                        listener.onError(e);
+                    }
+
+                    @Override
+                    public void onComplete() {
+                        listener.onComplete();
+                    }
+                });
+    }
 }

@@ -8,4 +8,6 @@ import com.leavessilent.quanmintv.listener.OnLoadingDataListener;
 
 public interface IAllLiveModel {
     void getAllLiveModel(OnLoadingDataListener<AllLiveModel> listener);
+
+    void getAllLiveModelByClassify(String classif,OnLoadingDataListener<AllLiveModel> listener);
 }

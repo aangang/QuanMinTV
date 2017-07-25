@@ -8,6 +8,6 @@
         android:id="@+id/item_home_banner"
         app:image_scale_type="fit_xy"
         android:layout_width="match_parent"
-        android:layout_height="170dp"></com.youth.banner.Banner>
+        android:layout_height="170dp"/>
 
 </FrameLayout>

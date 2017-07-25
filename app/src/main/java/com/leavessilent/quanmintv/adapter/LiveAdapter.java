@@ -9,7 +9,7 @@ import android.widget.TextView;
 import com.bumptech.glide.Glide;
 import com.leavessilent.quanmintv.R;
 import com.leavessilent.quanmintv.home.model.LinkObject;
-import com.leavessilent.quanmintv.utils.ScreenHelper;
+import com.leavessilent.quanmintv.utils.ScreenUtil;
 
 import java.text.DecimalFormat;
 import java.util.List;
@@ -44,7 +44,7 @@ public class LiveAdapter extends CommonAdapter<LinkObject> {
         TextView title = (TextView) holder.getView(R.id.live_item_title);
         Glide.with(mContext)
                 .load(linkObject.getThumb())
-                .bitmapTransform(new RoundedCornersTransformation(mContext, ScreenHelper.dp2px(mContext, 5), 0))
+                .bitmapTransform(new RoundedCornersTransformation(mContext, ScreenUtil.dp2px(mContext, 5), 0))
                 .into(image);
 
         int view = linkObject.getView();
